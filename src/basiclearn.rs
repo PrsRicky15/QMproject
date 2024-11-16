@@ -1,3 +1,27 @@
+pub mod closure{
+    #[allow(dead_code)]
+    pub fn run(){
+        let add : fn(f64, i32) = |x, y | println!("Sum: {}",x + y as f64);
+        add(2.,3);
+
+        let add2 : fn(f64, i32) -> f64 = |x, y |{
+            println!("The value of x is: {}",x);
+            println!("the value of y is: {}",y);
+            x + y as f64
+        };
+        println!("Sum: {}", add2(8.7327, 10));
+
+        let result = add2(5., 3);
+        let print_result = || println!("The result: {}", result);
+        print_result();
+
+        let print_result = |x| println!("The result: {}", result + x);
+        print_result(3.);
+    }
+
+
+}
+
 pub mod basicfunc {
     #[allow(dead_code)]
     pub fn get_full_name(first: &str, last: &str)->String{
