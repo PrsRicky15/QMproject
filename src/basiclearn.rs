@@ -1,5 +1,4 @@
 pub mod closure{
-
     struct Person{
         first_name:String,
         last_name:String
@@ -55,6 +54,8 @@ pub mod basicfunc {
 }
 
 pub mod control_flow {
+    use std::process::exit;
+
     #[allow(dead_code)]
     pub fn ifstatement_test(){
         let age_to_drive:u8 = 18;
@@ -70,6 +71,72 @@ pub mod control_flow {
             println!("Can not drive!")
         } else {
             println!("This year you can drive!")
+        }
+    }
+
+    #[derive(Debug)]
+    pub struct ShellValue {
+        l:u8, m:u8, n:u8
+    }
+
+    #[derive(Debug)]
+    pub enum Shelltype {
+        S {s: ShellValue},
+
+        P {px: ShellValue,
+            py: ShellValue,
+            pz: ShellValue},
+
+        D {dxx: ShellValue,
+            dyy: ShellValue,
+            dzz: ShellValue,
+            dxy: ShellValue,
+            dxz: ShellValue,
+            dyz: ShellValue},
+
+        F {fxxx: ShellValue,
+            fyyy: ShellValue,
+            fzzz: ShellValue,
+            fxxy: ShellValue,
+            fxxz: ShellValue,
+            fyyx: ShellValue,
+            fyyz: ShellValue,
+            fzzx: ShellValue,
+            fzzy: ShellValue,
+            fxyz: ShellValue,
+        },
+    }
+
+    // write a code which takes a character and generate the shell
+    // with l, m, n value
+    #[allow(dead_code)]
+    pub fn shell(shell_type:char)->Shelltype{
+        match shell_type {
+            'S' => Shelltype::S {s:ShellValue {l:0,m:0,n:0}},
+            _ => {println!("Shell type is not defines");exit(10)}
+        }
+    }
+
+    #[allow(dead_code)]
+    pub fn test_match(){
+        let shell_type ='S';
+        let mut sval = ShellValue{l:0, m:0, n:0};
+        match shell_type {
+            'S' => {sval.l = 0; sval.m = 0; sval.n =0}
+            'P' => {sval.l = 1; sval.m = 0; sval.n =0}
+            'D' => {sval.l = 2; sval.m = 0; sval.n =0}
+            'F' => {sval.l = 3; sval.m = 0; sval.n =0}
+            'G' => {sval.l = 4; sval.m = 0; sval.n =0}
+            _ => {println!("Shell type is not defines");exit(10)}
+        }
+        println!("Shell: {:?}", sval);
+
+        // different type of match
+        let number = 101;
+        match number {
+            1..=9 => println!("Single digit number"),
+            10..=99 => println!("Double digit number"),
+            _ => println!("somthing else")
         }
     }
 

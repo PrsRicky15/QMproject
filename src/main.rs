@@ -1,4 +1,5 @@
 mod basiclearn;
 fn main() {
-    basiclearn::closure::mutable_run()
+    let shell = basiclearn::control_flow::shell('S');
+    println!("{:?}",shell);
 }
