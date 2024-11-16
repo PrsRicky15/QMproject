@@ -37,6 +37,7 @@ pub mod control_flow {
         }
     }
 
+    #[allow(dead_code)]
     pub fn test_while_loop(){
         let mut x = 1;
         while x < 10{
@@ -51,6 +52,7 @@ pub mod control_flow {
         }
     }
 
+    #[allow(dead_code)]
     pub fn test_for_loop(){
         let ages:[i32; 5] = [2,4,6,8,10];
         for x in ages {
@@ -58,14 +60,14 @@ pub mod control_flow {
         }
     }
 
+    #[allow(dead_code)]
     pub fn test_loop(){
         let mut x = 0;
         loop {
             println!("Number {}", x);
             x += 1;
-            if x > 10 {
-                break;
-            }
+            if x > 10 { break }
         }
     }
+
 }
