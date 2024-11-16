@@ -7,10 +7,10 @@ pub mod closure{
 
     #[allow(dead_code)]
     pub fn run(){
-        let add : fn(f64, i32) = |x, y | println!("Sum: {}",x + y as f64);
-        add(2.,3);
+        let add : fn(f64, i32) = |x, y| println!("Sum: {}",x + y as f64);
+        add(2., 3);
 
-        let add2 : fn(f64, i32) -> f64 = |x, y |{
+        let add2 : fn(f64, i32) -> f64 = |x, y|{
             println!("The value of x is: {}",x);
             println!("the value of y is: {}",y);
             x + y as f64
@@ -105,5 +105,4 @@ pub mod control_flow {
             if x > 10 { break }
         }
     }
-
 }
