@@ -19,6 +19,7 @@ pub mod basicfunc {
 }
 
 pub mod control_flow {
+    #[allow(dead_code)]
     pub fn ifstatement_test(){
         let age_to_drive:u8 = 18;
 
@@ -36,5 +37,35 @@ pub mod control_flow {
         }
     }
 
-    pub fn while_loop(){}
+    pub fn test_while_loop(){
+        let mut x = 1;
+        while x < 10{
+            x *= 2;
+            println!("Even number {}", x);
+        }
+
+        let mut x = 0;
+        while x < 10{
+            x += 1;
+            println!("Number increment {}", x);
+        }
+    }
+
+    pub fn test_for_loop(){
+        let ages:[i32; 5] = [2,4,6,8,10];
+        for x in ages {
+            println!("Number {}", x);
+        }
+    }
+
+    pub fn test_loop(){
+        let mut x = 0;
+        loop {
+            println!("Number {}", x);
+            x += 1;
+            if x > 10 {
+                break;
+            }
+        }
+    }
 }
