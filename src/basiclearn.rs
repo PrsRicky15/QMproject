@@ -19,7 +19,7 @@ pub mod basicfunc {
 }
 
 pub mod control_flow {
-    pub fn drive_test(){
+    pub fn ifstatement_test(){
         let age_to_drive:u8 = 18;
 
         println!("Enter the person age:");
@@ -35,4 +35,6 @@ pub mod control_flow {
             println!("This year you can drive!")
         }
     }
+
+    pub fn while_loop(){}
 }
