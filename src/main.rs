@@ -1,4 +1,4 @@
 mod basiclearn;
 fn main() {
-    basiclearn::closure::run()
+    basiclearn::closure::mutable_run()
 }

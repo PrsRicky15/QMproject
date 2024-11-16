@@ -1,4 +1,10 @@
 pub mod closure{
+
+    struct Person{
+        first_name:String,
+        last_name:String
+    }
+
     #[allow(dead_code)]
     pub fn run(){
         let add : fn(f64, i32) = |x, y | println!("Sum: {}",x + y as f64);
@@ -19,7 +25,13 @@ pub mod closure{
         print_result(3.);
     }
 
-
+    #[allow(dead_code)]
+    pub fn mutable_run(){
+        let mut person1 = Person{ first_name: "Prashant".to_string(), last_name:"Raj".to_string()};
+        let mut change_name = |new_last_name:&str| person1.last_name = new_last_name.to_string();
+        change_name("Singh");
+        println!("Last Name: {} {}", person1.first_name, person1.last_name);
+    }
 }
 
 pub mod basicfunc {
