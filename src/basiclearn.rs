@@ -153,13 +153,13 @@ pub mod control_flow {
 
     #[allow(dead_code)]
     pub fn gaussian_basis(){
-        let shell_type_char = ['S', 'P'];
+        let shell_type_char = ['S', 'P', 'D'];
         let mut res;
         for i in shell_type_char.iter() {
              res = Shelltype::shell_char(i).unwrap();
-            println!("Gaussian Type: {} number: {}", i, res.0);
+            println!("Cartesian Gaussian Type: {} Angular moments: {}", i, res.0);
             for shell in res.1.iter() {
-                println!("{} {} {}", shell.l, shell.m, shell.n);
+                println!("l:{} m:{} n:{}", shell.l, shell.m, shell.n);
             }
         }
     }
