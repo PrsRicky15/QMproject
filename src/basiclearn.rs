@@ -54,8 +54,6 @@ pub mod basicfunc {
 }
 
 pub mod control_flow {
-    use std::process::exit;
-
     #[allow(dead_code)]
     pub fn ifstatement_test(){
         let age_to_drive:u8 = 18;
@@ -74,63 +72,99 @@ pub mod control_flow {
         }
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone, PartialEq)]
     pub struct ShellValue {
         l:u8, m:u8, n:u8
     }
 
     #[derive(Debug)]
     pub enum Shelltype {
-        S {s: ShellValue},
-
-        P {px: ShellValue,
-            py: ShellValue,
-            pz: ShellValue},
-
-        D {dxx: ShellValue,
-            dyy: ShellValue,
-            dzz: ShellValue,
-            dxy: ShellValue,
-            dxz: ShellValue,
-            dyz: ShellValue},
-
-        F {fxxx: ShellValue,
-            fyyy: ShellValue,
-            fzzz: ShellValue,
-            fxxy: ShellValue,
-            fxxz: ShellValue,
-            fyyx: ShellValue,
-            fyyz: ShellValue,
-            fzzx: ShellValue,
-            fzzy: ShellValue,
-            fxyz: ShellValue,
-        },
+        S (Vec<ShellValue>),
+        P (Vec<ShellValue>),
+        D (Vec<ShellValue>),
+        F (Vec<ShellValue>),
+        G (Vec<ShellValue>)
     }
 
-    // write a code which takes a character and generate the shell
-    // with l, m, n value
-    #[allow(dead_code)]
-    pub fn shell(shell_type:char)->Shelltype{
-        match shell_type {
-            'S' => Shelltype::S {s:ShellValue {l:0,m:0,n:0}},
-            _ => {println!("Shell type is not defines");exit(10)}
+    impl Shelltype {
+        pub fn get_shell_value(&self) -> (usize, Vec<ShellValue>) {
+            match self {
+                 Shelltype::S (values)
+                 |Shelltype::P (values)
+                 |Shelltype::D (values)
+                 |Shelltype::F (values)
+                 |Shelltype::G (values) => (values.len(), values.clone())
+            }
+        }
+
+        pub fn get_shell_char(shell_type:&char) -> Result<Shelltype,String>{
+            match shell_type {
+                'S' => Ok(Shelltype::S(vec![ShellValue{l:0,m:0,n:0}])),
+
+                'P' => Ok(Shelltype::P(vec![ShellValue{l:1,m:0,n:0},
+                                            ShellValue{l:0,m:1,n:0},
+                                            ShellValue{l:0,m:0,n:1}])),
+
+                'D' => Ok(Shelltype::D(vec![ShellValue{l:2,m:0,n:0},
+                                            ShellValue{l:0,m:2,n:0},
+                                            ShellValue{l:0,m:0,n:2},
+                                            ShellValue{l:1,m:1,n:0},
+                                            ShellValue{l:1,m:0,n:1},
+                                            ShellValue{l:0,m:1,n:1}])),
+
+                'F' => Ok(Shelltype::F(vec![ShellValue{l:3,m:0,n:0},
+                                            ShellValue{l:0,m:3,n:0},
+                                            ShellValue{l:0,m:0,n:3},
+                                            ShellValue{l:2,m:1,n:0},
+                                            ShellValue{l:2,m:0,n:1},
+                                            ShellValue{l:1,m:2,n:0},
+                                            ShellValue{l:1,m:0,n:2},
+                                            ShellValue{l:0,m:1,n:2},
+                                            ShellValue{l:0,m:2,n:1},
+                                            ShellValue{l:1,m:1,n:1}])),
+
+                'G' => Ok(Shelltype::G(vec![ShellValue{l:4,m:0,n:0},
+                                            ShellValue{l:0,m:4,n:0},
+                                            ShellValue{l:0,m:0,n:4},
+                                            ShellValue{l:3,m:1,n:0},
+                                            ShellValue{l:3,m:0,n:1},
+                                            ShellValue{l:1,m:3,n:0},
+                                            ShellValue{l:1,m:0,n:3},
+                                            ShellValue{l:0,m:3,n:1},
+                                            ShellValue{l:0,m:1,n:3},
+                                            ShellValue{l:2,m:2,n:0},
+                                            ShellValue{l:2,m:0,n:2},
+                                            ShellValue{l:0,m:2,n:2},
+                                            ShellValue{l:2,m:1,n:1},
+                                            ShellValue{l:1,m:2,n:2},
+                                            ShellValue{l:1,m:2,n:1}])),
+
+                _ => Err(format!("Invalid Shell Type! {}", shell_type))
+            }
+        }
+
+        pub fn shell_char(shelltype: &char) -> Result<(usize, Vec<ShellValue>),String>{
+            match Shelltype::get_shell_char(shelltype){
+                Ok(shell) => Ok(shell.get_shell_value()),
+                Err(e) => Err(e)
+            }
         }
     }
 
+    #[allow(dead_code)]
+    pub fn gaussian_basis(){
+        let shell_type_char = ['S', 'P'];
+        let mut res;
+        for i in shell_type_char.iter() {
+             res = Shelltype::shell_char(i).unwrap();
+            println!("Gaussian Type: {} number: {}", i, res.0);
+            for shell in res.1.iter() {
+                println!("{} {} {}", shell.l, shell.m, shell.n);
+            }
+        }
+    }
     #[allow(dead_code)]
     pub fn test_match(){
-        let shell_type ='S';
-        let mut sval = ShellValue{l:0, m:0, n:0};
-        match shell_type {
-            'S' => {sval.l = 0; sval.m = 0; sval.n =0}
-            'P' => {sval.l = 1; sval.m = 0; sval.n =0}
-            'D' => {sval.l = 2; sval.m = 0; sval.n =0}
-            'F' => {sval.l = 3; sval.m = 0; sval.n =0}
-            'G' => {sval.l = 4; sval.m = 0; sval.n =0}
-            _ => {println!("Shell type is not defines");exit(10)}
-        }
-        println!("Shell: {:?}", sval);
-
         // different type of match
         let number = 101;
         match number {
