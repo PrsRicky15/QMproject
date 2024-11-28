@@ -1,6 +1,7 @@
 mod math_vector;
 mod basiclearn;
-use math_vector::point3d::Coord3d;
+mod linear_algebra;
+
 use num_complex::Complex32;
 use std::ffi::c_void;
 
