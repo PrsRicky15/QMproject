@@ -1,9 +1,71 @@
-mod basiclearn;
 mod math_vector;
-use math_vector::math_vector::Coord3d;
+mod basiclearn;
+use math_vector::point3d::Coord3d;
+use num_complex::Complex32;
+use std::ffi::c_void;
+
+extern "C" {
+    fn fftwf_plan_dft_1d(
+        n: i32,
+        in_: *mut Complex32,
+        out: *mut Complex32,
+        sign: i32,
+        flags: u32,
+    ) -> *mut c_void;
+
+    fn fftwf_execute(plan: *mut c_void);
+    fn fftwf_destroy_plan(plan: *mut c_void);
+}
+
+const FFTW_FORWARD: i32 = -1;
+const FFTW_MEASURE: u32 = 0;
+
+fn fft(){
+    let n = 8; // Size of the input array
+    let mut input: Vec<Complex32> = vec![
+        Complex32::new(1.0, 0.0),
+        Complex32::new(1.0, 0.0),
+        Complex32::new(1.0, 0.0),
+        Complex32::new(1.0, 0.0),
+        Complex32::new(0.0, 0.0),
+        Complex32::new(0.0, 0.0),
+        Complex32::new(0.0, 0.0),
+        Complex32::new(0.0, 0.0),
+    ];
+    let mut output: Vec<Complex32> = vec![Complex32::new(0.0, 0.0); n];
+
+    unsafe {
+        // Create FFTW plan
+        let plan = fftwf_plan_dft_1d(
+            n as i32,
+            input.as_mut_ptr(),
+            output.as_mut_ptr(),
+            FFTW_FORWARD,
+            FFTW_MEASURE,
+        );
+
+        // Execute the plan
+        fftwf_execute(plan);
+
+        // Destroy the plan
+        fftwf_destroy_plan(plan);
+    }
+
+    // Print the result
+    println!("Output:");
+    for (i, value) in output.iter().enumerate() {
+        println!("output[{}] = {}", i, value);
+    }
+}
+
+fn blas(){
+    let a = vec![1.0, 2.0, 3.0, 4.0]; // 2x2 matrix
+    let b = vec![5.0, 6.0, 7.0, 8.0]; // 2x2 matrix
+    let mut c = vec![0.0; 4];         // Result 2x2 matrix
+    basiclearn::blas::dgemm('N', 'N', 2, 2, 2, 1.0, &a, 2, &b, 2, 0.0, &mut c, 2);
+    assert_eq!(c, vec![19.0, 22.0, 43.0, 50.0]); // Validate output
+}
 fn main() {
-   basiclearn::control_flow::gaussian_basis();
-   let p1: Coord3d<u8> = Coord3d::origin();
-   let p2: Coord3d<u8> = Coord3d::new(1,1,1);
-   println!("{:?}", p2.distance(p1));
+    fft();
+    blas();
 }

@@ -1,3 +1,61 @@
+pub mod blas{
+    extern "C" {
+        fn dgemm_(
+            transa: *const u8,
+            transb: *const u8,
+            m: *const i32,
+            n: *const i32,
+            k: *const i32,
+            alpha: *const f64,
+            a: *const f64,
+            lda: *const i32,
+            b: *const f64,
+            ldb: *const i32,
+            beta: *const f64,
+            c: *mut f64,
+            ldc: *const i32,
+        );
+    }
+
+    pub fn dgemm(
+        transa: char,
+        transb: char,
+        m: i32,
+        n: i32,
+        k: i32,
+        alpha: f64,
+        a: &[f64],
+        lda: i32,
+        b: &[f64],
+        ldb: i32,
+        beta: f64,
+        c: &mut [f64],
+        ldc: i32,
+    ) {
+        assert!(a.len() >= (lda * k) as usize, "Matrix A dimensions are incorrect.");
+        assert!(b.len() >= (ldb * n) as usize, "Matrix B dimensions are incorrect.");
+        assert!(c.len() >= (ldc * n) as usize, "Matrix C dimensions are incorrect.");
+
+        unsafe {
+            dgemm_(
+                &(transa as u8),
+                &(transb as u8),
+                &m,
+                &n,
+                &k,
+                &alpha,
+                a.as_ptr(),
+                &lda,
+                b.as_ptr(),
+                &ldb,
+                &beta,
+                c.as_mut_ptr(),
+                &ldc,
+            );
+        }
+    }
+
+}
 pub mod closure{
     struct Person{
         first_name:String,

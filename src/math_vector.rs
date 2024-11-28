@@ -1,5 +1,5 @@
 #[allow(dead_code)]
-pub mod math_vector {
+pub mod point3d {
     use std::ops::{Add, Sub, Mul};
 
     #[derive(Debug, Copy, Clone)]
