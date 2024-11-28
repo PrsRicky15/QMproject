@@ -58,12 +58,27 @@ fn fft(){
     }
 }
 
+fn to_column_major(a: &[f64], rows: usize, cols: usize) -> Vec<f64> {
+    let mut col_major = vec![0.0; rows * cols];
+    for i in 0..rows {
+        for j in 0..cols {
+            col_major[j * rows + i] = a[i * cols + j];
+        }
+    }
+    col_major
+}
+
 fn blas(){
     let a = vec![1.0, 2.0, 3.0, 4.0]; // 2x2 matrix
     let b = vec![5.0, 6.0, 7.0, 8.0]; // 2x2 matrix
     let mut c = vec![0.0; 4];         // Result 2x2 matrix
-    basiclearn::blas::dgemm('N', 'N', 2, 2, 2, 1.0, &a, 2, &b, 2, 0.0, &mut c, 2);
-    assert_eq!(c, vec![19.0, 22.0, 43.0, 50.0]); // Validate output
+
+    let a_col_major = to_column_major(&a, 2, 2);
+    let b_col_major = to_column_major(&b, 2, 2);
+
+    basiclearn::blas::dgemm('N', 'N', 2, 2, 2, 1.0, &a_col_major, 2, &b_col_major, 2, 0.0, &mut c, 2);
+    let c_col_major = to_column_major(&c, 2, 2);
+    assert_eq!(c_col_major, vec![19.0, 22.0, 43.0, 50.0]); // Validate output
 }
 fn main() {
     fft();
