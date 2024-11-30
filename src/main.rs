@@ -2,6 +2,7 @@ mod math_vector;
 mod basiclearn;
 mod linear_algebra;
 
+use crate::basiclearn::basicfunc::check_hashmap;
 use num_complex::Complex32;
 use std::ffi::c_void;
 
@@ -82,6 +83,7 @@ fn blas(){
     assert_eq!(c_col_major, vec![19.0, 22.0, 43.0, 50.0]); // Validate output
 }
 fn main() {
+    check_hashmap();
     fft();
     blas();
 }

@@ -1,5 +1,6 @@
 #[allow(dead_code)]
-mod matrix{
+
+mod vectors{
     use std::alloc::{alloc, dealloc, realloc, Layout};
     use std::ptr;
 
@@ -93,57 +94,9 @@ mod matrix{
         }
     }
 
-    struct MyVecSafe<T> {
-        data: Box<[T]>,
-        len: usize,
-        capacity: usize,
-    }
+}
 
-    impl<T> MyVecSafe<T> {
-        fn new(capacity: usize) -> Self {
-            let mut vec = Vec::with_capacity(capacity);
-            let ptr = vec.as_mut_ptr();
-            std::mem::forget(vec);
-
-            let data = unsafe { Box::from_raw(ptr as *mut [T]) };
-            Self {
-                data,
-                len: 0,
-                capacity,
-            }
-        }
-
-        fn push(&mut self, value: T) {
-            if self.len == self.capacity {
-                panic!("ManualVector is full! Implement resizing here.");
-            }
-
-            unsafe {
-                let end = self.data.as_mut_ptr().add(self.len);
-                end.write(value);
-            }
-            self.len += 1;
-        }
-
-        fn get(&self, index: usize) -> Option<&T> {
-            if index < self.len {
-                Some(unsafe { &*self.data.as_ptr().add(index) })
-            } else {
-                None
-            }
-        }
-
-        fn pop(&mut self) -> Option<T> {
-            if self.len == 0 {
-                return None;
-            }
-
-            self.len -= 1;
-            let value = unsafe { self.data.as_mut_ptr().add(self.len).read() };
-            Some(value)
-        }
-    }
-
+mod matrix{
     #[derive(Debug, Clone, PartialEq)]
     pub struct Matrix<T>{
         nrows:usize,

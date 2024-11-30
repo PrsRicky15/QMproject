@@ -56,13 +56,14 @@ pub mod blas{
     }
 
 }
+
+#[allow(dead_code)]
 pub mod closure{
     struct Person{
         first_name:String,
         last_name:String
     }
 
-    #[allow(dead_code)]
     pub fn run(){
         let add : fn(f64, i32) = |x, y| println!("Sum: {}",x + y as f64);
         add(2., 3);
@@ -82,7 +83,6 @@ pub mod closure{
         print_result(3.);
     }
 
-    #[allow(dead_code)]
     pub fn mutable_run(){
         let mut person1 = Person{ first_name: "Prashant".to_string(), last_name:"Raj".to_string()};
         let mut change_name = |new_last_name:&str| person1.last_name = new_last_name.to_string();
@@ -91,14 +91,53 @@ pub mod closure{
     }
 }
 
+#[allow(dead_code)]
 pub mod basicfunc {
-    #[allow(dead_code)]
+    use std::collections::HashMap;
+
+    pub fn check_hashmap(){
+        let mut shell = HashMap::new();
+        shell.insert(String::from("S"),0);
+        shell.insert(String::from("P"),1);
+        shell.insert(String::from("D"),2);
+        shell.insert(String::from("F"),3);
+        shell.insert(String::from("G"),4);
+        shell.insert(String::from("H"),5);
+
+//        shell.get("K").expect("Something went wrong.");
+        println!("shell contains: {}",shell.contains_key(&String::from("M")));
+        println!("shell value: {}",shell["G".into()]);
+    }
+
+    pub fn take_ownership(vec: Vec<i32>){
+        println!("{:?}", vec);
+    }
+
+    pub fn gives_ownership()->Vec<i32>{
+        vec![1,2,3,4,5]
+    }
+
+    pub fn ownership_wihtout_cloning(){
+        let vec1 = vec![1,2,3,4,5];
+        take_ownership(vec1); // function take the ownership and you can not print the vector here
+    }
+
+    pub fn ownership_using_cloning(){
+        let vec1 = vec![1,2,3,4,5];
+        take_ownership(vec1.clone()); // you clone the vector then only it can be printed
+        println!("vec1: {:?}", vec1);
+    }
+
+    pub fn give_take_ownership(mut vec: Vec<i32>) ->Vec<i32>{
+        vec.push(1);
+        vec
+    }
+
     pub fn get_full_name(first: &str, last: &str)->String{
         let full_name = format!("{0} {1}", first, last);
         full_name
     }
 
-    #[allow(dead_code)]
     pub fn some_examples_touples_array_and_box(){
         let atom_type = ("He", 2, 2_f64, 4_f64); // Touple
         println!("Atom, {:?}", atom_type);
@@ -109,6 +148,7 @@ pub mod basicfunc {
         let some_atoms = &atomic_charge[5..7]; // slice
         println!("Atomic Charge, {:?}", some_atoms);
     }
+
 }
 
 pub mod control_flow {
